@@ -1,11 +1,13 @@
 fx_version 'cerulean'
 game 'gta5'
 
-name "qb-scenes"
-description "An optimised scene resource utilising ox_lib. Made for LegacyRP "
-author "L1"
+name "mtc-scenes"
+description "An optimised scene resource utilising ox_lib."
+author "More Than Code"
 version "1.0.0"
+
 lua54 'yes'
+
 shared_scripts {
 	'@ox_lib/init.lua',
 	'@qb-core/shared/locale.lua',
