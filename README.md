@@ -1,4 +1,4 @@
-![Scenes](https://i.imgur.com/79uX5JH.png)
+![Scenes](https://i.imgur.com/KHlDlCK.png)
 
 # Scenes
 This resource enhances the Scenes experience within the QBCore and Qbox Framework environments. In the script, there are some ready-made commands that you can essentially convert into radial menu actions.
