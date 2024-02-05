@@ -30,7 +30,23 @@ local function IsBanned(identifier)
     return data[identifier] or false
 end
 
+local function SaveScenes(scenes)
+    WriteJson('save', scenes)
+end
+
+local function GetSavedScenes()
+    local savedScenes = ReadJson('save')
+
+    if not savedScenes then
+        return {}
+    end
+
+    return savedScenes
+end
+
 return {
     BanIdentifier,
-    IsBanned
+    IsBanned,
+    SaveScenes,
+    GetSavedScenes
 }

@@ -73,10 +73,8 @@ local function DrawText3D(text, coords, color)
     SetDrawOrigin(coords.x, coords.y, coords.z, 0)
     DrawText(0.0, 0.0)
     local factor = (string.len(text)) / 180
-    print(string.len(text))
     if string.len(text) > 100 then
         factor = (string.len(text)) / 300
-        print(string.len(text))
     end
     DrawRect(0.0, 0.0 + 0.0150, 0.017 + factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()

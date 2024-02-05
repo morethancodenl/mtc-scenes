@@ -1,7 +1,8 @@
-local importBans = require('server.bans')
-local BanIdentifier, IsBanned = importBans[1], importBans[2]
+local import = require('server.json')
+local BanIdentifier, IsBanned, SaveScenes, GetSavedScenes = import[1], import[2], import[3], import[4]
 
 local scenes = {}
+
 
 local function GetIdentifier(player, type)
     local identifiers = GetPlayerIdentifiers(player)
@@ -81,4 +82,28 @@ lib.callback.register('qb-scenes:server:newScene', function(source, text, coords
 
     TriggerEvent('qb-log:server:CreateLog', 'scenes', 'New Scene', 'green', '**' .. GetPlayerName(source) .. '** (' .. source .. ') created a new scene with the text: **' .. text .. '**')
     return true
+end)
+
+RegisterNetEvent('mtc-scenes:server:LoadScenes', function()
+
+    local reqScenes = GetSavedScenes()
+
+    for k , v in pairs(reqScenes) do
+        scenes[#scenes+1] = v
+        TriggerClientEvent('qb-scenes:client:refreshScenes', -1, v)
+    end
+end)
+
+AddEventHandler('onResourceStop', function (resourceName)
+    if (GetCurrentResourceName() ~= resourceName) then
+        return
+    end
+    SaveScenes(scenes)
+end)
+
+AddEventHandler('onResourceStart', function (resourceName)
+    if (GetCurrentResourceName() ~= resourceName) then
+        return
+    end
+    TriggerEvent('mtc-scenes:server:LoadScenes')
 end)

@@ -21,10 +21,11 @@ client_scripts {
 }
 
 server_scripts {
-	'server/bans.lua',
+	'server/json.lua',
 	'server/main.lua'
 }
 
 files {
+	'storage/save.json',
 	'storage/bans.json'
 }
