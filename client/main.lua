@@ -63,7 +63,7 @@ end
 ---@param coords table the coords to draw the text at (x, y, z)
 ---@param color table the color of the text (r, g, b, a)
 local function DrawText3D(text, coords, color)
-    SetTextScale(0.5, 0.5)
+    SetTextScale(0.45, 0.45)
     SetTextFont(4)
     SetTextProportional(true)
     SetTextColour(color.r, color.g, color.b, 255)
@@ -72,8 +72,13 @@ local function DrawText3D(text, coords, color)
     AddTextComponentString(text)
     SetDrawOrigin(coords.x, coords.y, coords.z, 0)
     DrawText(0.0, 0.0)
-    local factor = (string.len(text)) / 370
-    DrawRect(0.0, 0.0 + 0.0125, 0.017 + factor, 0.03, 0, 0, 0, 75)
+    local factor = (string.len(text)) / 180
+    print(string.len(text))
+    if string.len(text) > 100 then
+        factor = (string.len(text)) / 300
+        print(string.len(text))
+    end
+    DrawRect(0.0, 0.0 + 0.0150, 0.017 + factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
 
