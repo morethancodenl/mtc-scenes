@@ -1,1 +1,1 @@
-QBCore = exports['qb-core']:GetCoreObject()
+lib.locale()

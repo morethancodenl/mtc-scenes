@@ -10,9 +10,6 @@ lua54 'yes'
 
 shared_scripts {
 	'@ox_lib/init.lua',
-	'@qb-core/shared/locale.lua',
-    'locales/nl.lua',
-    'locales/*.lua',
 	'shared/*.lua'
 }
 
@@ -27,5 +24,6 @@ server_scripts {
 
 files {
 	'storage/save.json',
-	'storage/bans.json'
+	'storage/bans.json',
+	'locales/*.json'
 }

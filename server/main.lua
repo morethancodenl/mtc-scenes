@@ -14,7 +14,17 @@ local function GetIdentifier(player, type)
     return nil
 end
 
-QBCore.Commands.Add('sceneban', Lang:t('commands.ban_description'), {name="player", description=Lang:t('commands.player_id') }, false, function(source, args)
+lib.addCommand('sceneban', {
+    description = locale('commands.ban_scene_description'),
+    params = {
+        {
+            name = "player",
+            type = 'playerId',
+            description = locale('commands.player_id')
+        }
+    },
+    restricted = true
+}, function(source, args)
     local target = tonumber(args[1])
     if not target then
         return
@@ -30,14 +40,14 @@ QBCore.Commands.Add('sceneban', Lang:t('commands.ban_description'), {name="playe
     TriggerClientEvent('chat:addMessage', source, {
         args = {'Scene Ban', Lang:t('chatMessages.banned')}
     })
-end, 'admin')
+end)
 
 
-lib.callback.register('qb-scenes:server:getScenes', function(source)
+lib.callback.register('mtc-scenes:server:getScenes', function(source)
     return scenes
 end)
 
-lib.callback.register('qb-scenes:server:destoryScene', function(source, id)
+lib.callback.register('mtc-scenes:server:destoryScene', function(source, id)
     local identifier = GetIdentifier(source, 'license')
     
     
@@ -50,13 +60,13 @@ lib.callback.register('qb-scenes:server:destoryScene', function(source, id)
     end
 
     local scene = scenes[id]
-    TriggerEvent('qb-log:server:CreateLog', 'scenes', 'Removed scene', 'red', '**' .. GetPlayerName(source) .. '** (' .. source .. ') removed the scene with text: **' .. scene.text .. '**' .. " which was created by **" .. GetPlayerName(scene.owner) .. "**")
+    -- Add your logging here
     scenes[id] = nil
-    TriggerClientEvent('qb-scenes:client:refreshScenes', -1, scenes)
+    TriggerClientEvent('mtc-scenes:client:refreshScenes', -1, scenes)
     return true
 end)
 
-lib.callback.register('qb-scenes:server:newScene', function(source, text, coords, color, distance)
+lib.callback.register('mtc-scenes:server:newScene', function(source, text, coords, color, distance)
     local identifier = GetIdentifier(source, 'license')
     
     
@@ -78,9 +88,9 @@ lib.callback.register('qb-scenes:server:newScene', function(source, text, coords
 
     scenes[#scenes + 1] = scene
 
-    TriggerClientEvent('qb-scenes:client:refreshScenes', -1, scenes)
+    TriggerClientEvent('mtc-scenes:client:refreshScenes', -1, scenes)
 
-    TriggerEvent('qb-log:server:CreateLog', 'scenes', 'New Scene', 'green', '**' .. GetPlayerName(source) .. '** (' .. source .. ') created a new scene with the text: **' .. text .. '**')
+    -- Add your logging here
     return true
 end)
 
@@ -90,7 +100,7 @@ RegisterNetEvent('mtc-scenes:server:LoadScenes', function()
 
     for k , v in pairs(reqScenes) do
         scenes[#scenes+1] = v
-        TriggerClientEvent('qb-scenes:client:refreshScenes', -1, v)
+        TriggerClientEvent('mtc-scenes:client:refreshScenes', -1, v)
     end
 end)
 

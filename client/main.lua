@@ -17,7 +17,7 @@ local function CoordPicker()
     local enabled = true
     local prom = promise.new()
 
-    lib.showTextUI(Lang:t('textUI.select'), {
+    lib.showTextUI(locale('textUI.select'), {
         position = "left-center",
         icon = "e"
     })
@@ -108,28 +108,28 @@ end
 -- Menu options
 local function toggleScenes()
     ShowScenes = not ShowScenes
-    QBCore.Functions.Notify(Lang:t('notify.scene_visibility') .. (ShowScenes and Lang:t('notify.scene_visibility_visible') or Lang:t('notify.scene_visibility_hidden')), "success")
+    exports.qbx_core:Notify(locale('notify.scene_visibility') .. (ShowScenes and locale('notify.scene_visibility_visible') or locale('notify.scene_visibility_hidden')), "success")
 end
 
 local function createScene()
-    local input = lib.inputDialog(Lang:t('createScene.new_scene'), {
+    local input = lib.inputDialog(locale('createScene.new_scene'), {
         {
             type = "input",
-            label = Lang:t('createScene.input_label'),
-            description = Lang:t('createScene.input_description'),
+            label = locale('createScene.input_label'),
+            description = locale('createScene.input_description'),
             required = true,
         },
         {
             type = "color",
-            label = Lang:t('createScene.color_label'),
-            description = Lang:t('createScene.color_label'),
+            label = locale('createScene.color_label'),
+            description = locale('createScene.color_label'),
             required = true,
             default = "#ffffff"
         },
         {
             type = "slider",
-            label = Lang:t('createScene.slider_label'),
-            description = Lang:t('createScene.slider_label'),
+            label = locale('createScene.slider_label'),
+            description = locale('createScene.slider_label'),
             required = true,
             default = 7.5,
             min = 1.0,
@@ -144,13 +144,13 @@ local function createScene()
     local coords = CoordPicker()
 
     if not coords then
-        QBCore.Functions.Notify(Lang:t('notify.not_placed'), "error")
+        exports.qbx_core:Notify(locale('notify.not_placed'), "error")
         return
     end
 
-    local success = lib.callback.await('qb-scenes:server:newScene', nil, text, coords, color, distance)
+    local success = lib.callback.await('mtc-scenes:server:newScene', nil, text, coords, color, distance)
     if not success then
-        QBCore.Functions.Notify(Lang:t('notify.failed'), "error")
+        exports.qbx_core:Notify(locale('notify.failed'), "error")
     end
 end
 
@@ -158,17 +158,17 @@ local function DestoryClosestScene()
     for i, v in ipairs(scenes) do
         local dist = #(v.coords - GetEntityCoords(cache.ped))
         if dist < 3 then
-            local success  = lib.callback.await('qb-scenes:server:destoryScene', nil, i)
+            local success  = lib.callback.await('mtc-scenes:server:destoryScene', nil, i)
             if not success then
-                QBCore.Functions.Notify(Lang:t('notify.failed_destroy'), "error")
+                exports.qbx_core:Notify(locale('notify.failed_destroy'), "error")
                 return
             end
-            QBCore.Functions.Notify(Lang:t('notify.succes_destroy'), "success")
+            exports.qbx_core:Notify(locale('notify.succes_destroy'), "success")
             return
         end
     end
 
-    QBCore.Functions.Notify(Lang:t('notify.scene_nearby'), "error")
+    exports.qbx_core:Notify(locale('notify.scene_nearby'), "error")
 end
 
 
@@ -177,7 +177,7 @@ RegisterCommand('scene', function()
 end)
 
 -- The event for adding a new scene, triggered when a new scene is added on the server
-RegisterNetEvent('qb-scenes:client:refreshScenes', function(EVscenes)
+RegisterNetEvent('mtc-scenes:client:refreshScenes', function(EVscenes)
     scenes = EVscenes
     SetupScenes(scenes) 
 end)
@@ -189,19 +189,19 @@ CreateThread(function()
         title = 'Scenes',
         options = {
             {
-                title = Lang:t('optionsScene.toggle'),
+                title = locale('optionsScene.toggle'),
                 onSelect = toggleScenes,
             },
             {
-                title = Lang:t('optionsScene.create'),
+                title = locale('optionsScene.create'),
                 onSelect = createScene,
             },
             {
-                title = Lang:t('optionsScene.destroy'),
+                title = locale('optionsScene.destroy'),
                 onSelect = DestoryClosestScene,
             }
         }
     })
-    scenes = lib.callback.await('qb-scenes:server:getScenes')
+    scenes = lib.callback.await('mtc-scenes:server:getScenes')
     SetupScenes(scenes)
 end)
